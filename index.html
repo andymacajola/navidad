@@ -81,9 +81,9 @@
 
     .tree-space {
       position: relative;
-      width: min(100%, 420px);
-      height: min(46svh, 420px);
-      min-height: 240px;
+      width: min(100%, 520px);
+      height: min(58svh, 520px);
+      min-height: 280px;
       flex: none;
       cursor: grab;
       touch-action: none;
@@ -116,12 +116,12 @@
       body { padding: 0; }
       .scene { min-height: 100svh; border: 0; border-radius: 0; }
       .composition { min-height: 100svh; padding: 12px 14px 22px; }
-      .tree-space { width: min(100%, 330px); height: 44svh; min-height: 210px; max-height: 320px; }
+      .tree-space { width: min(100%, 380px); height: 50svh; min-height: 240px; max-height: 380px; }
       h1 { max-width: 96vw; font-size: 38px; }
     }
 
     @media (max-height: 620px) {
-      .tree-space { height: 38svh; min-height: 190px; max-height: 280px; }
+      .tree-space { height: 46svh; min-height: 220px; max-height: 330px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -166,10 +166,10 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    camera.position.set(0, 0.2, 8.1);
+    camera.position.set(0, 0.1, 7.2);
     camera.lookAt(0, 0, 0);
-    tree.scale.set(0.78, 0.78, 0.78);
-    tree.position.y = -0.08;
+    tree.scale.set(1.18, 1.18, 1.18);
+    tree.position.y = 0.06;
     scene.add(tree);
 
     function randomGenerator(seed) {
