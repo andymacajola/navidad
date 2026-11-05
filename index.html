@@ -236,7 +236,12 @@
       const treeHeight = Math.min(height * 0.48, width * 0.94);
       const treeTop = height * 0.075;
       const halfWidth = treeHeight * 0.43;
+      const rotation = reducedMotion ? 1 : Math.cos(time * 0.00035);
 
+      context.save();
+      context.translate(centerX, 0);
+      context.scale(rotation, 1);
+      context.translate(-centerX, 0);
       context.lineWidth = 1;
       context.strokeStyle = 'rgba(95, 119, 73, .27)';
       for (let strand = -0.9; strand <= 0.9; strand += 0.3) {
@@ -276,6 +281,7 @@
       context.shadowBlur = 0;
 
       drawStar(centerX, treeTop - 5, 11, 4, time);
+      context.restore();
 
       snow.forEach((flake) => {
         context.globalAlpha = flake.alpha;
