@@ -37,8 +37,28 @@
       overflow: hidden;
       border: 1px solid rgba(229, 44, 128, .25);
       border-radius: 14px;
-      background: #070809;
+      background: #0a0a0a;
       box-shadow: 0 0 48px rgba(224, 18, 110, .13), inset 0 0 80px rgba(19, 40, 31, .12);
+    }
+
+    .scene::before {
+      position: absolute;
+      z-index: 0;
+      inset: -8%;
+      background:
+        radial-gradient(ellipse 180px 135px at 12% 21%, rgba(201, 28, 91, .22), transparent 76%),
+        radial-gradient(ellipse 210px 155px at 88% 25%, rgba(143, 21, 64, .2), transparent 76%),
+        radial-gradient(ellipse 230px 175px at 73% 80%, rgba(179, 34, 86, .16), transparent 77%),
+        radial-gradient(ellipse 190px 145px at 19% 84%, rgba(123, 22, 61, .19), transparent 76%);
+      content: '';
+      filter: blur(24px);
+      pointer-events: none;
+      animation: bokeh-drift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes bokeh-drift {
+      from { transform: translate3d(-1.5%, -1%, 0) scale(1); opacity: .7; }
+      to { transform: translate3d(1.5%, 1%, 0) scale(1.06); opacity: 1; }
     }
 
     #lights {
@@ -61,10 +81,23 @@
     }
 
     .tree-space {
-      width: 100%;
+      position: relative;
+      width: min(100%, 560px);
       height: min(53svh, 470px);
       min-height: 280px;
       flex: none;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .tree-space.is-dragging { cursor: grabbing; }
+
+    #lights {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      outline: none;
     }
 
     .dedication { margin-top: 5px; }
@@ -118,12 +151,116 @@
     .personalize input:focus { border-color: var(--gold); }
     .personalize input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
+    .code-card {
+      width: min(100%, 490px);
+      margin-top: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(207, 183, 199, .16);
+      border-radius: 7px;
+      background: rgba(17, 15, 19, .9);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .34);
+      text-align: left;
+      backdrop-filter: blur(12px);
+    }
+
+    .code-toolbar {
+      min-height: 40px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(207, 183, 199, .11);
+    }
+
+    .window-dots { display: flex; gap: 6px; }
+    .window-dots span { width: 9px; height: 9px; border-radius: 50%; }
+    .window-dots span:nth-child(1) { background: #ff6258; }
+    .window-dots span:nth-child(2) { background: #f5bf42; }
+    .window-dots span:nth-child(3) { background: #36c978; }
+
+    .code-tab {
+      height: 40px;
+      padding: 0 9px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid var(--gold);
+      color: #e4d8de;
+      font: 11px 'DM Sans', sans-serif;
+    }
+
+    .code-tab::before {
+      width: 7px;
+      height: 7px;
+      margin-right: 7px;
+      border-radius: 2px;
+      background: #d987b5;
+      content: '';
+      transform: rotate(45deg);
+    }
+
+    .code-toggle {
+      min-height: 32px;
+      margin-left: auto;
+      padding: 0 3px 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      background: transparent;
+      color: #d0c3cd;
+      font: 11px 'DM Sans', sans-serif;
+      cursor: pointer;
+    }
+
+    .code-toggle:hover { color: #fff3c4; }
+    .code-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+    .toggle-chevron {
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform 220ms ease;
+    }
+
+    .code-card.is-open .toggle-chevron { transform: rotate(225deg) translate(-1px, -1px); }
+
+    .code-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 260ms ease, opacity 220ms ease;
+    }
+
+    .code-card.is-open .code-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .code-content-inner { overflow: hidden; }
+
+    .code-content pre {
+      margin: 0;
+      padding: 13px 15px 15px;
+      overflow-x: auto;
+      color: #d8cfd5;
+      font: 11px/1.75 'SFMono-Regular', Consolas, monospace;
+      text-align: left;
+    }
+
+    .code-selector { color: #e89bd0; }
+    .code-property { color: #a8c9f0; }
+    .code-value { color: #f1c47b; }
+    .code-comment { color: #847983; }
+
     @media (max-width: 580px) {
       body { padding: 0; }
       .scene { min-height: 100svh; border: 0; border-radius: 0; }
       .composition { min-height: 100svh; padding: 12px 14px 22px; }
       .tree-space { height: 48svh; min-height: 270px; max-height: 390px; }
       h1 { max-width: 96vw; font-size: 38px; }
+      .code-card { margin-top: 12px; }
     }
 
     @media (max-height: 620px) {
@@ -140,7 +277,9 @@
   <main class="scene" id="scene">
     <canvas id="lights" aria-hidden="true"></canvas>
     <div class="composition">
-      <div class="tree-space" aria-hidden="true"></div>
+      <div class="tree-space" id="tree-space" role="img" aria-label="Árbol navideño tridimensional. Arrastra para girarlo.">
+        <canvas id="lights" aria-hidden="true"></canvas>
+      </div>
       <section class="dedication" aria-live="polite">
         <h1>Feliz Navidad, <span id="recipient">mi amor</span></h1>
         <p class="subtitle">iluminas mi vida <span>✦</span></p>
@@ -149,22 +288,61 @@
         <label for="recipient-input">Para</label>
         <input id="recipient-input" type="text" value="mi amor" maxlength="28" autocomplete="off">
       </form>
+      <section class="code-card" id="code-card" aria-label="Editor de estilos CSS">
+        <div class="code-toolbar">
+          <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span class="code-tab">Style.css</span>
+          <button class="code-toggle" id="code-toggle" type="button" aria-expanded="false" aria-controls="code-content">
+            <span id="toggle-label">Ver código</span>
+            <span class="toggle-chevron" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="code-content" id="code-content" aria-hidden="true">
+          <div class="code-content-inner">
+            <pre><code><span class="code-comment">/* Una Navidad para recordar */</span>
+<span class="code-selector">.Christmas_love</span> {
+  <span class="code-property">color</span>: <span class="code-value">#f4c84e</span>;
+  <span class="code-property">text-shadow</span>: <span class="code-value">0 0 18px #f4c84e</span>;
+  <span class="code-property">animation</span>: <span class="code-value">glow 2s ease-in-out infinite</span>;
+}</code></pre>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
-  <script>
-    const scene = document.querySelector('#scene');
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+    const treeSpace = document.querySelector('#tree-space');
     const canvas = document.querySelector('#lights');
-    const context = canvas.getContext('2d');
     const recipientInput = document.querySelector('#recipient-input');
     const recipient = document.querySelector('#recipient');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const colors = ['#ffd34e', '#fff4bd', '#e9435a', '#69b6ec', '#50c98a'];
-    let width = 0;
-    let height = 0;
-    let pixelRatio = 1;
-    let bulbs = [];
-    let snow = [];
+    const colors = ['#ffd34e', '#f7c947', '#fff3c4', '#e9435a'];
+    const colorValues = colors.map((color) => new THREE.Color(color));
+    const random = randomGenerator(2025);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 40);
+    const tree = new THREE.Group();
+    const bulbsByColor = colors.map(() => []);
+    const bulbMeshes = [];
+    const clock = new THREE.Clock();
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const rotationSpeed = 0.2;
+    let rotationOffset = 0;
+    let dragging = false;
+    let dragStartX = 0;
+    let dragStartRotation = 0;
+    let frameId;
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    camera.position.set(0, 0.05, 8.7);
+    camera.lookAt(0, 0, 0);
+    scene.add(tree);
 
     function randomGenerator(seed) {
       return () => {
@@ -173,140 +351,214 @@
       };
     }
 
-    function resizeCanvas() {
-      const bounds = scene.getBoundingClientRect();
-      width = bounds.width;
-      height = bounds.height;
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(width * pixelRatio);
-      canvas.height = Math.round(height * pixelRatio);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-
-      const random = randomGenerator(2025);
-      const treeHeight = Math.min(height * 0.48, width * 0.94);
-      const halfWidth = treeHeight * 0.43;
-      bulbs = Array.from({ length: 420 }, () => {
-        const progress = 0.03 + random() * 0.97;
-        const offset = (random() * 2 - 1) * halfWidth * progress;
-        const colorPick = random();
-        const colorIndex = colorPick < 0.62 ? 0 : colorPick < 0.79 ? 1 : colorPick < 0.87 ? 2 : colorPick < 0.94 ? 3 : 4;
-        return {
-          x: offset,
-          y: progress * treeHeight,
-          color: colors[colorIndex],
-          radius: 1 + random() * 1.2,
-          phase: random() * Math.PI * 2
-        };
-      });
-
-      snow = Array.from({ length: Math.max(26, Math.round(width * height / 14500)) }, () => ({
-        x: random() * width,
-        y: random() * height,
-        radius: 0.5 + random() * 1.1,
-        drift: (random() - 0.5) * 0.25,
-        speed: 0.12 + random() * 0.3,
-        alpha: 0.15 + random() * 0.42
-      }));
+    function createGlowTexture() {
+      const glowCanvas = document.createElement('canvas');
+      glowCanvas.width = 64;
+      glowCanvas.height = 64;
+      const glowContext = glowCanvas.getContext('2d');
+      const gradient = glowContext.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gradient.addColorStop(0, 'rgba(255,255,255,1)');
+      gradient.addColorStop(0.16, 'rgba(255,255,255,.82)');
+      gradient.addColorStop(0.42, 'rgba(255,255,255,.24)');
+      gradient.addColorStop(1, 'rgba(255,255,255,0)');
+      glowContext.fillStyle = gradient;
+      glowContext.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(glowCanvas);
     }
 
-    function drawStar(x, y, outerRadius, innerRadius, time) {
-      context.save();
-      context.translate(x, y);
-      context.rotate(Math.sin(time * 0.0007) * 0.08);
-      context.beginPath();
+    function addGarlands(height, baseRadius) {
+      for (let strand = 0; strand < 4; strand += 1) {
+        const points = [];
+        for (let step = 0; step <= 180; step += 1) {
+          const progress = step / 180;
+          const angle = progress * Math.PI * 2 * 5 + strand * Math.PI / 2;
+          const radius = baseRadius * (1 - progress);
+          points.push(new THREE.Vector3(
+            Math.cos(angle) * radius,
+            -height / 2 + progress * height,
+            Math.sin(angle) * radius
+          ));
+        }
+        const curve = new THREE.CatmullRomCurve3(points);
+        const geometry = new THREE.TubeGeometry(curve, 240, 0.008, 4, false);
+        const material = new THREE.MeshBasicMaterial({
+          color: strand % 2 === 0 ? 0x8e7134 : 0x47513a,
+          transparent: true,
+          opacity: 0.58
+        });
+        tree.add(new THREE.Mesh(geometry, material));
+      }
+    }
+
+    function createTree() {
+      const height = 4.45;
+      const baseRadius = 1.34;
+      const bulbGeometry = new THREE.SphereGeometry(0.038, 8, 8);
+      addGarlands(height, baseRadius);
+
+      for (let strand = 0; strand < 5; strand += 1) {
+        for (let step = 0; step < 62; step += 1) {
+          const progress = (step + random() * 0.7) / 62;
+          const angle = progress * Math.PI * 2 * 5 + strand * Math.PI * 2 / 5 + (random() - 0.5) * 0.11;
+          const radius = baseRadius * (1 - progress) * (0.97 + random() * 0.06);
+          const bulb = {
+            position: new THREE.Vector3(
+              Math.cos(angle) * radius,
+              -height / 2 + progress * height,
+              Math.sin(angle) * radius
+            ),
+            phase: random() * Math.PI * 2,
+            size: 0.75 + random() * 0.45
+          };
+          const shade = random();
+          const colorIndex = shade < 0.56 ? 0 : shade < 0.69 ? 1 : shade < 0.84 ? 2 : 3;
+          bulbsByColor[colorIndex].push(bulb);
+        }
+      }
+
+      bulbsByColor.forEach((bulbs, colorIndex) => {
+        const material = new THREE.MeshBasicMaterial({ color: colors[colorIndex], toneMapped: false });
+        const mesh = new THREE.InstancedMesh(bulbGeometry, material, bulbs.length);
+        mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        mesh.userData.bulbs = bulbs;
+        tree.add(mesh);
+        bulbMeshes.push(mesh);
+      });
+
+      const starShape = new THREE.Shape();
       for (let point = 0; point < 10; point += 1) {
         const angle = -Math.PI / 2 + point * Math.PI / 5;
-        const radius = point % 2 === 0 ? outerRadius : innerRadius;
-        const pointX = Math.cos(angle) * radius;
-        const pointY = Math.sin(angle) * radius;
-        if (point === 0) context.moveTo(pointX, pointY);
-        else context.lineTo(pointX, pointY);
+        const radius = point % 2 === 0 ? 0.18 : 0.075;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        if (point === 0) starShape.moveTo(x, y);
+        else starShape.lineTo(x, y);
       }
-      context.closePath();
-      context.shadowColor = '#ffd34e';
-      context.shadowBlur = 22;
-      context.fillStyle = '#fff3b1';
-      context.fill();
-      context.restore();
+      starShape.closePath();
+      const starMaterial = new THREE.MeshBasicMaterial({ color: 0xfff0a3, toneMapped: false, side: THREE.DoubleSide });
+      const star = new THREE.Mesh(new THREE.ShapeGeometry(starShape), starMaterial);
+      star.position.y = height / 2 + 0.13;
+      tree.add(star);
+
+      const haloMaterial = new THREE.SpriteMaterial({
+        map: createGlowTexture(),
+        color: 0xffcf55,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const halo = new THREE.Sprite(haloMaterial);
+      halo.position.copy(star.position);
+      halo.scale.set(0.72, 0.72, 1);
+      tree.add(halo);
+
+      return star;
     }
 
-    function draw(time = 0) {
-      context.clearRect(0, 0, width, height);
-      const centerX = width / 2;
-      const treeHeight = Math.min(height * 0.48, width * 0.94);
-      const treeTop = height * 0.075;
-      const halfWidth = treeHeight * 0.43;
-      const rotation = reducedMotion ? 1 : Math.cos(time * 0.00035);
-
-      context.save();
-      context.translate(centerX, 0);
-      context.scale(rotation, 1);
-      context.translate(-centerX, 0);
-      context.lineWidth = 1;
-      context.strokeStyle = 'rgba(95, 119, 73, .27)';
-      for (let strand = -0.9; strand <= 0.9; strand += 0.3) {
-        context.beginPath();
-        for (let step = 0; step <= 50; step += 1) {
-          const progress = step / 50;
-          const x = centerX + strand * progress * halfWidth + Math.sin(progress * 10 + strand * 4) * progress * 5;
-          const y = treeTop + progress * treeHeight;
-          if (step === 0) context.moveTo(x, y);
-          else context.lineTo(x, y);
-        }
-        context.stroke();
+    function addBackgroundStars() {
+      const positions = [];
+      for (let index = 0; index < 85; index += 1) {
+        positions.push((random() - 0.5) * 7.5, (random() - 0.5) * 5.2, -1.8 - random() * 1.4);
       }
-
-      for (let level = 1; level < 9; level += 1) {
-        const progress = level / 9;
-        const spread = halfWidth * progress;
-        const y = treeTop + treeHeight * progress;
-        context.beginPath();
-        context.moveTo(centerX - spread, y - 9);
-        context.quadraticCurveTo(centerX, y + 14, centerX + spread, y - 9);
-        context.strokeStyle = 'rgba(137, 108, 48, .24)';
-        context.stroke();
-      }
-
-      bulbs.forEach((bulb) => {
-        const pulse = reducedMotion ? 0.8 : 0.48 + (Math.sin(time * 0.0018 + bulb.phase) + 1) * 0.26;
-        context.globalAlpha = pulse;
-        context.shadowColor = bulb.color;
-        context.shadowBlur = 5 + pulse * 8;
-        context.fillStyle = bulb.color;
-        context.beginPath();
-        context.arc(centerX + bulb.x, treeTop + bulb.y, bulb.radius, 0, Math.PI * 2);
-        context.fill();
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      const material = new THREE.PointsMaterial({
+        color: 0xded7c6,
+        size: 0.025,
+        transparent: true,
+        opacity: 0.56,
+        sizeAttenuation: true,
+        depthWrite: false
       });
-      context.globalAlpha = 1;
-      context.shadowBlur = 0;
-
-      drawStar(centerX, treeTop - 5, 11, 4, time);
-      context.restore();
-
-      snow.forEach((flake) => {
-        context.globalAlpha = flake.alpha;
-        context.fillStyle = '#fff6dc';
-        context.beginPath();
-        context.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-        context.fill();
-        if (!reducedMotion) {
-          flake.y = (flake.y + flake.speed) % height;
-          flake.x += flake.drift;
-          if (flake.x < 0) flake.x = width;
-          if (flake.x > width) flake.x = 0;
-        }
-      });
-      context.globalAlpha = 1;
-
-      if (!reducedMotion) window.requestAnimationFrame(draw);
+      scene.add(new THREE.Points(geometry, material));
     }
 
+    const star = createTree();
+    addBackgroundStars();
+    const dummy = new THREE.Object3D();
+
+    function resizeScene() {
+      const bounds = treeSpace.getBoundingClientRect();
+      if (!bounds.width || !bounds.height) return;
+      renderer.setSize(bounds.width, bounds.height, false);
+      camera.aspect = bounds.width / bounds.height;
+      camera.updateProjectionMatrix();
+      renderScene();
+    }
+
+    function renderScene(time = 0) {
+      bulbMeshes.forEach((mesh) => {
+        mesh.userData.bulbs.forEach((bulb, index) => {
+          const pulse = reducedMotion ? 1 : 0.88 + Math.sin(time * 0.003 + bulb.phase) * 0.16;
+          dummy.position.copy(bulb.position);
+          dummy.scale.setScalar(bulb.size * pulse);
+          dummy.updateMatrix();
+          mesh.setMatrixAt(index, dummy.matrix);
+        });
+        mesh.instanceMatrix.needsUpdate = true;
+      });
+      star.rotation.z = reducedMotion ? 0 : Math.sin(time * 0.001) * 0.08;
+      renderer.render(scene, camera);
+    }
+
+    function animate(time) {
+      if (!dragging && !reducedMotion) tree.rotation.y = rotationOffset + time * rotationSpeed * 0.001;
+      renderScene(time);
+      if (!reducedMotion) frameId = window.requestAnimationFrame(animate);
+    }
+
+    treeSpace.addEventListener('pointerdown', (event) => {
+      dragging = true;
+      dragStartX = event.clientX;
+      dragStartRotation = tree.rotation.y;
+      treeSpace.classList.add('is-dragging');
+      treeSpace.setPointerCapture(event.pointerId);
+    });
+
+    treeSpace.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+      tree.rotation.y = dragStartRotation + (event.clientX - dragStartX) * 0.009;
+      renderScene(performance.now());
+    });
+
+    function stopDragging() {
+      if (!dragging) return;
+      dragging = false;
+      treeSpace.classList.remove('is-dragging');
+      rotationOffset = tree.rotation.y - performance.now() * rotationSpeed * 0.001;
+    }
+
+    treeSpace.addEventListener('pointerup', stopDragging);
+    treeSpace.addEventListener('pointercancel', stopDragging);
     recipientInput.addEventListener('input', () => {
       recipient.textContent = recipientInput.value.trim() || 'mi amor';
     });
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    draw();
+    document.querySelector('#personalize').addEventListener('submit', (event) => event.preventDefault());
+
+    const codeCard = document.querySelector('#code-card');
+    const codeToggle = document.querySelector('#code-toggle');
+    const codeContent = document.querySelector('#code-content');
+    const toggleLabel = document.querySelector('#toggle-label');
+    codeToggle.addEventListener('click', () => {
+      const isOpen = codeToggle.getAttribute('aria-expanded') === 'true';
+      codeToggle.setAttribute('aria-expanded', String(!isOpen));
+      codeContent.setAttribute('aria-hidden', String(isOpen));
+      toggleLabel.textContent = isOpen ? 'Ver código' : 'Ocultar código';
+      codeCard.classList.toggle('is-open', !isOpen);
+    });
+
+    const resizeObserver = new ResizeObserver(resizeScene);
+    resizeObserver.observe(treeSpace);
+    window.addEventListener('resize', resizeScene);
+    reducedMotionQuery.addEventListener('change', () => window.location.reload());
+    resizeScene();
+    animate(0);
+
+    window.addEventListener('pagehide', () => {
+      window.cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      renderer.dispose();
+    }, { once: true });
   </script>
 </body>
 </html>
