@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080809">
-  <title>Feliz Navidad, mi amor</title>
+  <title>Feliz Navidad</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Great+Vibes&display=swap');
 
@@ -12,7 +12,6 @@
       color-scheme: dark;
       --gold: #f4c84e;
       --cream: #fff3c4;
-      --muted: #a89ba4;
       font-family: 'DM Sans', sans-serif;
       background: #250719;
       color: var(--cream);
@@ -113,159 +112,16 @@
       text-shadow: 0 0 18px rgba(241, 185, 56, .28);
     }
 
-    .subtitle {
-      margin: 5px 0 0;
-      color: rgba(255, 243, 196, .7);
-      font-family: Georgia, serif;
-      font-size: 13px;
-    }
-
-    .subtitle span { color: var(--gold); }
-
-    .personalize {
-      margin-top: 20px;
-      display: grid;
-      justify-items: center;
-      gap: 6px;
-    }
-
-    .personalize label {
-      color: var(--muted);
-      font-size: 10px;
-    }
-
-    .personalize input {
-      width: min(260px, 76vw);
-      height: 34px;
-      padding: 0 8px;
-      border: 0;
-      border-bottom: 1px solid rgba(255, 243, 196, .27);
-      border-radius: 0;
-      outline: none;
-      background: transparent;
-      color: var(--cream);
-      font: 14px 'DM Sans', sans-serif;
-      text-align: center;
-    }
-
-    .personalize input:focus { border-color: var(--gold); }
-    .personalize input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-    .code-card {
-      width: min(100%, 490px);
-      margin-top: 15px;
-      overflow: hidden;
-      border: 1px solid rgba(207, 183, 199, .16);
-      border-radius: 7px;
-      background: rgba(17, 15, 19, .9);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .34);
-      text-align: left;
-      backdrop-filter: blur(12px);
-    }
-
-    .code-toolbar {
-      min-height: 40px;
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid rgba(207, 183, 199, .11);
-    }
-
-    .window-dots { display: flex; gap: 6px; }
-    .window-dots span { width: 9px; height: 9px; border-radius: 50%; }
-    .window-dots span:nth-child(1) { background: #ff6258; }
-    .window-dots span:nth-child(2) { background: #f5bf42; }
-    .window-dots span:nth-child(3) { background: #36c978; }
-
-    .code-tab {
-      height: 40px;
-      padding: 0 9px;
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid var(--gold);
-      color: #e4d8de;
-      font: 11px 'DM Sans', sans-serif;
-    }
-
-    .code-tab::before {
-      width: 7px;
-      height: 7px;
-      margin-right: 7px;
-      border-radius: 2px;
-      background: #d987b5;
-      content: '';
-      transform: rotate(45deg);
-    }
-
-    .code-toggle {
-      min-height: 32px;
-      margin-left: auto;
-      padding: 0 3px 0 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 0;
-      background: transparent;
-      color: #d0c3cd;
-      font: 11px 'DM Sans', sans-serif;
-      cursor: pointer;
-    }
-
-    .code-toggle:hover { color: #fff3c4; }
-    .code-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-
-    .toggle-chevron {
-      width: 7px;
-      height: 7px;
-      border-right: 1px solid currentColor;
-      border-bottom: 1px solid currentColor;
-      transform: rotate(45deg) translateY(-2px);
-      transition: transform 220ms ease;
-    }
-
-    .code-card.is-open .toggle-chevron { transform: rotate(225deg) translate(-1px, -1px); }
-
-    .code-content {
-      display: grid;
-      grid-template-rows: 0fr;
-      opacity: 0;
-      transition: grid-template-rows 260ms ease, opacity 220ms ease;
-    }
-
-    .code-card.is-open .code-content {
-      grid-template-rows: 1fr;
-      opacity: 1;
-    }
-
-    .code-content-inner { overflow: hidden; }
-
-    .code-content pre {
-      margin: 0;
-      padding: 13px 15px 15px;
-      overflow-x: auto;
-      color: #d8cfd5;
-      font: 11px/1.75 'SFMono-Regular', Consolas, monospace;
-      text-align: left;
-    }
-
-    .code-selector { color: #e89bd0; }
-    .code-property { color: #a8c9f0; }
-    .code-value { color: #f1c47b; }
-    .code-comment { color: #847983; }
-
     @media (max-width: 580px) {
       body { padding: 0; }
       .scene { min-height: 100svh; border: 0; border-radius: 0; }
       .composition { min-height: 100svh; padding: 12px 14px 22px; }
       .tree-space { height: 48svh; min-height: 270px; max-height: 390px; }
       h1 { max-width: 96vw; font-size: 38px; }
-      .code-card { margin-top: 12px; }
     }
 
     @media (max-height: 620px) {
       .tree-space { height: 42svh; min-height: 210px; }
-      .personalize { margin-top: 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -275,38 +131,12 @@
 </head>
 <body>
   <main class="scene" id="scene">
-    <canvas id="lights" aria-hidden="true"></canvas>
     <div class="composition">
       <div class="tree-space" id="tree-space" role="img" aria-label="Árbol navideño tridimensional. Arrastra para girarlo.">
         <canvas id="lights" aria-hidden="true"></canvas>
       </div>
       <section class="dedication" aria-live="polite">
-        <h1>Feliz Navidad, <span id="recipient">mi amor</span></h1>
-        <p class="subtitle">iluminas mi vida <span>✦</span></p>
-      </section>
-      <form class="personalize" id="personalize">
-        <label for="recipient-input">Para</label>
-        <input id="recipient-input" type="text" value="mi amor" maxlength="28" autocomplete="off">
-      </form>
-      <section class="code-card" id="code-card" aria-label="Editor de estilos CSS">
-        <div class="code-toolbar">
-          <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <span class="code-tab">Style.css</span>
-          <button class="code-toggle" id="code-toggle" type="button" aria-expanded="false" aria-controls="code-content">
-            <span id="toggle-label">Ver código</span>
-            <span class="toggle-chevron" aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="code-content" id="code-content" aria-hidden="true">
-          <div class="code-content-inner">
-            <pre><code><span class="code-comment">/* Una Navidad para recordar */</span>
-<span class="code-selector">.Christmas_love</span> {
-  <span class="code-property">color</span>: <span class="code-value">#f4c84e</span>;
-  <span class="code-property">text-shadow</span>: <span class="code-value">0 0 18px #f4c84e</span>;
-  <span class="code-property">animation</span>: <span class="code-value">glow 2s ease-in-out infinite</span>;
-}</code></pre>
-          </div>
-        </div>
+        <h1>Feliz Navidad</h1>
       </section>
     </div>
   </main>
@@ -316,11 +146,8 @@
 
     const treeSpace = document.querySelector('#tree-space');
     const canvas = document.querySelector('#lights');
-    const recipientInput = document.querySelector('#recipient-input');
-    const recipient = document.querySelector('#recipient');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const colors = ['#ffd34e', '#f7c947', '#fff3c4', '#e9435a'];
-    const colorValues = colors.map((color) => new THREE.Color(color));
     const random = randomGenerator(2025);
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     const scene = new THREE.Scene();
@@ -328,7 +155,6 @@
     const tree = new THREE.Group();
     const bulbsByColor = colors.map(() => []);
     const bulbMeshes = [];
-    const clock = new THREE.Clock();
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const rotationSpeed = 0.2;
     let rotationOffset = 0;
@@ -337,7 +163,7 @@
     let dragStartRotation = 0;
     let frameId;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     camera.position.set(0, 0.05, 8.7);
@@ -393,7 +219,7 @@
     function createTree() {
       const height = 4.45;
       const baseRadius = 1.34;
-      const bulbGeometry = new THREE.SphereGeometry(0.038, 8, 8);
+      const bulbGeometry = new THREE.SphereGeometry(0.038, 20, 16);
       addGarlands(height, baseRadius);
 
       for (let strand = 0; strand < 5; strand += 1) {
@@ -530,23 +356,6 @@
 
     treeSpace.addEventListener('pointerup', stopDragging);
     treeSpace.addEventListener('pointercancel', stopDragging);
-    recipientInput.addEventListener('input', () => {
-      recipient.textContent = recipientInput.value.trim() || 'mi amor';
-    });
-    document.querySelector('#personalize').addEventListener('submit', (event) => event.preventDefault());
-
-    const codeCard = document.querySelector('#code-card');
-    const codeToggle = document.querySelector('#code-toggle');
-    const codeContent = document.querySelector('#code-content');
-    const toggleLabel = document.querySelector('#toggle-label');
-    codeToggle.addEventListener('click', () => {
-      const isOpen = codeToggle.getAttribute('aria-expanded') === 'true';
-      codeToggle.setAttribute('aria-expanded', String(!isOpen));
-      codeContent.setAttribute('aria-hidden', String(isOpen));
-      toggleLabel.textContent = isOpen ? 'Ver código' : 'Ocultar código';
-      codeCard.classList.toggle('is-open', !isOpen);
-    });
-
     const resizeObserver = new ResizeObserver(resizeScene);
     resizeObserver.observe(treeSpace);
     window.addEventListener('resize', resizeScene);
